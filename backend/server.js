@@ -43,26 +43,41 @@ app.get('/api/weather', async (req, res) => {
   }
 });
 
-// Diagnose endpoint: accepts image via multipart form-data at field "image"
-app.post('/api/diagnose', upload.single('image'), async (req, res) => {
-  if (!req.file) return res.status(400).json({ error: 'image file required' });
+const { analyzeImageBuffer, callChatModel } = require("./services/gemini");
 
-  // NOTE: This is a stub. Replace with real Gemini Vision or other model integration.
-  // For now we return a mocked response and echo some basic info.
+// existing upload multer config...
+app.post('/api/diagnose', upload.single('image'), async (req, res) => {
   try {
-    // TODO: send req.file.buffer to the vision API
-    const mock = {
-      plant: 'Maize',
-      disease: 'Northern Leaf Blight',
-      confidence: 0.87,
-      advice: 'Remove affected leaves and apply recommended fungicide according to local regulations.'
-    };
-    res.json({ ok: true, result: mock });
+    if (!req.file) return res.status(400).json({ error: "image required" });
+    const buf = req.file.buffer;
+    const result = await analyzeImageBuffer(buf);
+    // Attach some fallback related images if empty (or call Unsplash via server if you have key).
+    if (!result.relatedImages || result.relatedImages.length === 0) {
+      result.relatedImages = [
+        "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?w=800&q=60",
+        "https://images.unsplash.com/photo-1528825871115-3581a5387919?w=800&q=60"
+      ];
+    }
+    res.json({ ok: true, result });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'diagnosis failed', details: err.message });
+    res.status(500).json({ error: "diagnose failed", details: err.message });
   }
 });
+
+app.post('/api/chat', async (req, res) => {
+  // expects { messages: [{role,text}, ...], imageContext: {...} }
+  try {
+    const { messages, imageContext } = req.body;
+    if (!messages || !Array.isArray(messages)) return res.status(400).json({ error: "messages required" });
+    const assistant = await callChatModel(messages, imageContext);
+    res.json({ ok: true, assistant });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "chat failed", details: err.message });
+  }
+});
+
 
 // Serve static frontend in production (optional)
 app.use(express.static(path.join(__dirname, 'public')));
