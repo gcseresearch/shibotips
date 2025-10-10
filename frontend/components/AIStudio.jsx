@@ -7,7 +7,8 @@ import "./aistudio.css";
  * API_BASE should be provided via Vite env: import.meta.env.VITE_API_BASE
  * If empty, assumes same origin.
  */
-const API_BASE = import.meta.env.VITE_API_BASE || "";
+const API_BASE = "https://shibotips.onrender.com";
+
 
 function randomInt(max){ return Math.floor(Math.random()*max); }
 
