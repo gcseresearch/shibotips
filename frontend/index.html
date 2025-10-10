@@ -1,12 +1,112 @@
 <!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MyHealthyPlant - Sseremba Joachim</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Shibo FarmTips</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <img src="" alt="" aria-hidden="true" class="brand-logo" />
+        <h1>Shibo FarmTips</h1>
+      </div>
+      <nav class="nav">
+        <a href="#" data-nav="home" class="nav-link active">Home</a>
+        <a href="#" data-nav="diagnose" class="nav-link">Diagnose</a>
+        <a href="#" data-nav="about" class="nav-link">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" id="app">
+    <!-- Home -->
+    <section id="home" class="page">
+      <div class="hero card">
+        <div class="hero-left">
+          <h2>Farm smarter, harvest better</h2>
+          <p>Upload crop photos for quick AI diagnosis, check real-time weather for your location, and get practical advice.</p>
+          <div class="cta-row">
+            <button id="goto-diagnose" class="btn">Diagnose a crop</button>
+            <button id="refresh-weather" class="btn outlined">Refresh weather</button>
+          </div>
+        </div>
+        <div class="hero-right" id="weather-mini">
+          <!-- Weather card inserted by JS -->
+          <div class="weather-loading">Allow location access to view local weather.</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>How it works</h3>
+          <ol>
+            <li>Take a clear photo of the affected leaf or stem.</li>
+            <li>Upload it to the Diagnoser — AI will analyze it (Gemini/HF/your provider)</li>
+            <li>Get diagnosis, confidence, and suggested next steps.</li>
+          </ol>
+        </div>
+        <div class="card">
+          <h3>Tips</h3>
+          <ul>
+            <li>Photograph in daylight for best results</li>
+            <li>Avoid blurry photos or too-distant shots</li>
+            <li>Combine diagnosis with weather info for treatment timing</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Diagnose -->
+    <section id="diagnose" class="page hidden">
+      <div class="card">
+        <h2>Diagnoser</h2>
+        <p>Upload an image of a crop to get an AI-powered diagnosis.</p>
+        <form id="diagnose-form" class="diagnose-form">
+          <label class="file-label">
+            <input id="image-input" type="file" accept="image/*" />
+            <span>Select image (photo of leaf/stem)</span>
+          </label>
+          <div class="form-row">
+            <button id="analyze-btn" class="btn" type="submit">Analyze</button>
+            <button id="back-home" class="btn outlined" type="button">Back</button>
+          </div>
+        </form>
+
+        <div id="diagnose-result" class="diagnose-result hidden card">
+          <h3>Result</h3>
+          <p><strong>Plant:</strong> <span id="res-plant">—</span></p>
+          <p><strong>Disease:</strong> <span id="res-disease">—</span> <small id="res-confidence"></small></p>
+          <p><strong>Advice:</strong></p>
+          <p id="res-advice"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="page hidden">
+      <div class="card">
+        <h2>About Shibo FarmTips</h2>
+        <p>Shibo FarmTips is a lightweight tool to help smallholder farmers and agronomists quickly detect crop problems and plan interventions. Built to be fast, private-ready, and easy to deploy.</p>
+        <p>App name: <strong>Shibo FarmTips</strong></p>
+        <p>Author: <strong>Sseremba Joachim</strong></p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <small>© <span id="year"></span> Shibo FarmTips — Built for farmers.</small>
+      <div class="footer-links">
+        <a href="#" data-nav="about" class="nav-link small">About</a>
+        <a href="#" class="nav-link small" id="repo-link">Source</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./app.js"></script>
+</body>
 </html>
