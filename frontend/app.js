@@ -1,7 +1,8 @@
 // app.js - simple client logic for Shibo FarmTips
 // IMPORTANT: set API_BASE to your backend URL (e.g. https://mybackend.onrender.com)
 // If empty, it will call same origin `/api` endpoints.
-const API_BASE = ""; // <-- set your backend base URL here, e.g. "https://shibotips-backend.onrender.com"
+const API_BASE = "https://shibotips.onrender.com";
+
 
 const qs = (s, p=document) => p.querySelector(s);
 const qsa = (s,p=document) => Array.from(p.querySelectorAll(s));
